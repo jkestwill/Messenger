@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/users"
+    app:startDestination="@id/usersViewPagerFragment">
+
+    <fragment
+        android:id="@+id/usersViewPagerFragment"
+        android:name="com.example.messanger.ui.screens.UsersViewPagerFragment"
+        android:label="fragment_users_view_pager"
+        tools:layout="@layout/fragment_users_view_pager" >
+        <action
+            android:id="@+id/action_usersViewPagerFragment_to_messageFragment"
+            app:destination="@id/messageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.example.messanger.ui.screens.MessageFragment"
+        android:label="fragment_message"
+        tools:layout="@layout/fragment_message" />
+</navigation>

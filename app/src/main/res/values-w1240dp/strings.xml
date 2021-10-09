@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="change_email">Change email</string>
+    <string name="change_username">Change username</string>
+    <string name="default_notification_channel_id">message_channel</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="username">Username</string>
+    <string name="change_password">Submit</string>
+    <string name="notifications">Notifications</string>
+    <string name="items">Items:</string>
+    <string name="new_password">New password</string>
+    <string name="old_password">Old password</string>
+</resources>

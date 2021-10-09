@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/auth">
+
+   <action android:id="@+id/messageNotification_to_messageFragment"
+       app:destination="@id/messenger"
+       app:launchSingleTop="true"
+      />
+
+   <include app:graph="@navigation/auth"/>
+   <include app:graph="@navigation/notification"/>
+   <include app:graph="@navigation/users"/>
+   <include app:graph="@navigation/profile"/>
+   <include app:graph="@navigation/messenger"/>
+
+</navigation>

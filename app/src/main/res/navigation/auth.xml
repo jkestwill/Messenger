@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.messanger.ui.screens.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+
+            />
+
+        <action
+            android:id="@+id/action_loginFragment_to_profile"
+            app:destination="@id/profile"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.messanger.ui.screens.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+
+        <action
+            android:id="@+id/action_registerFragment_to_profile"
+            app:destination="@id/profile"
+            app:popUpTo="@id/profile"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
+    <include app:graph="@navigation/profile" />
+</navigation>

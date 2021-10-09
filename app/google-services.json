@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "97344881236",
+    "project_id": "messanger-da630",
+    "storage_bucket": "messanger-da630.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97344881236:android:7d99eb9347356fe6ef63c1",
+        "android_client_info": {
+          "package_name": "com.example.messanger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97344881236-m909am1jhcfmmd6h6gjslpdb3or68cqd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBey21GXYrihwBlFqFFJquOocVmCrmCGlU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97344881236-m909am1jhcfmmd6h6gjslpdb3or68cqd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
