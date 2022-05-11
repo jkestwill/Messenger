@@ -63,6 +63,7 @@ class MessengerRepository @Inject constructor(private val firebaseDatabase: Fire
         chatReference: String,
     ): Completable {
         return Completable.create { emitter ->
+            Log.e(TAG, "sendMessage: $chatReference")
             firebaseDatabase.getReference("messages")
                 .child("/$chatReference")
                 .child(message.id)
@@ -81,7 +82,6 @@ class MessengerRepository @Inject constructor(private val firebaseDatabase: Fire
         message: Message
     ): Completable {
         return Completable.create { emmiter ->
-
             firebaseDatabase.getReference("/messages")
                 .child("/$chatReference")
                 .child("/${message.id}")
@@ -118,9 +118,7 @@ class MessengerRepository @Inject constructor(private val firebaseDatabase: Fire
                             }
 
                             )
-
                         }
-
                         Log.e(TAG, "onDataChange: ${snapshot.getValue(genericTypeIndicator)}")
                     }
 
@@ -142,6 +140,7 @@ class MessengerRepository @Inject constructor(private val firebaseDatabase: Fire
                             val genericTypeIndicator =
                                 object : GenericTypeIndicator<HashMap<String, Message>>() {}
 
+                            // показывает поселднее сообщение
                             snapshot.child(i).getValue(genericTypeIndicator)?.let {
                                 val item = (it.values.toList()).sortedWith { o1, o2 ->
                                     if ((o1.timestamp as Long) > (o2.timestamp as Long)) {

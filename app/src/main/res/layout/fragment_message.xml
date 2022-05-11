@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".ui.screens.MessageFragment">
 
 
@@ -12,12 +11,17 @@
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
 
+        <ImageButton
+            android:id="@+id/button_back"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_back"
+            android:src="@drawable/ic_arrow_back_24"
+            />
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/message_toolbar_user_image"
             android:layout_width="50dp"
@@ -40,7 +44,8 @@
         android:id="@+id/message_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#F6F0EB"
+        app:stackFromEnd="true"
+        android:windowSoftInputMode="adjustResize"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

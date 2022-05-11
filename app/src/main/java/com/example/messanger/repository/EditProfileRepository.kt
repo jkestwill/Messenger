@@ -12,8 +12,6 @@ import com.google.firebase.database.ValueEventListener
 import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import java.net.PasswordAuthentication
-import java.security.AuthProvider
 import javax.inject.Inject
 
 class EditProfileRepository @Inject constructor(
@@ -41,12 +39,15 @@ class EditProfileRepository @Inject constructor(
                                 friends = it.friends
                                 messages = it.messages
                                 deviceToken = it.deviceToken
+                                gender = "sas"
                             }
+
                             emmiter.onNext(user)
                         }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
+                        Log.e(TAG, "onCancelled $error: ")
                         emmiter.tryOnError(error.toException())
                     }
 
@@ -70,11 +71,39 @@ class EditProfileRepository @Inject constructor(
                             ?.addOnFailureListener {
                                 emitter.tryOnError(it)
                             }
+
                     }
                     ?.addOnFailureListener {
                         emitter.tryOnError(it)
                     }
 
+            }
+        }
+    }
+
+    fun sendEmailVerification(): Completable {
+        return Completable.create { emmiter ->
+            firebaseAuth.currentUser?.sendEmailVerification()
+                ?.addOnCompleteListener {
+                    emmiter.onComplete()
+                }
+                ?.addOnFailureListener {
+                    emmiter.tryOnError(it)
+                }
+
+        }
+    }
+
+    fun sendPasswordChangeEmail(): Completable {
+        return Completable.create { emmiter ->
+            firebaseAuth.currentUser?.email?.let { email ->
+                firebaseAuth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener {
+                        emmiter.onComplete()
+                    }
+                    .addOnFailureListener {
+                        emmiter.tryOnError(it)
+                    }
             }
         }
     }
@@ -103,18 +132,54 @@ class EditProfileRepository @Inject constructor(
         }
     }
 
+    fun updateGender(gender: String): Completable {
+        return Completable.create { emitter ->
+            firebaseAuth.currentUser?.let { currentUser ->
+                firebaseDatabase.getReference("/users")
+                    .child(currentUser.uid)
+                    .child("/gender")
+                    .setValue(gender)
+                    .addOnCompleteListener {
+                        emitter.onComplete()
+                    }
+                    .addOnFailureListener {
+                        emitter.tryOnError(it)
+                    }
+            }
+        }
+    }
+
+    fun updateUserBirthday(birthday: Long): Completable {
+        return Completable.create { emitter ->
+            firebaseAuth.currentUser?.let { currentUser ->
+                firebaseDatabase.getReference("/users")
+                    .child(currentUser.uid)
+                    .child("/birthday")
+                    .setValue(birthday)
+                    .addOnCompleteListener {
+                        emitter.onComplete()
+                    }
+                    .addOnFailureListener {
+                        emitter.tryOnError(it)
+                    }
+            }
+        }
+    }
+
     fun updateUserEmail(email: String): Completable {
         return Completable.create { emitter ->
-            firebaseDatabase.getReference("/users")
-                .child(CurrentUser.user.uid)
-                .child("/email")
-                .setValue(email)
-                .addOnCompleteListener {
-                    emitter.onComplete()
-                }
-                .addOnFailureListener {
-                    emitter.tryOnError(it)
-                }
+            firebaseAuth.currentUser?.let { currentUser ->
+                firebaseDatabase.getReference("/users")
+                    .child(currentUser.uid)
+                    .child("/email")
+                    .setValue(email)
+                    .addOnCompleteListener {
+                        emitter.onComplete()
+                    }
+                    .addOnFailureListener {
+                        emitter.tryOnError(it)
+                    }
+            }
         }
     }
 

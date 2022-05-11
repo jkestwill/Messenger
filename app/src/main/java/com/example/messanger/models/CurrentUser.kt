@@ -17,6 +17,9 @@ object CurrentUser {
             deviceToken=""
             friends= hashMapOf()
             messages= hashMapOf()
+            birthday=123123124124
+            gender=""
+
         }
     }
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settings"
+    app:startDestination="@id/editProfileFragment2">
+
+    <fragment
+        android:id="@+id/editProfileFragment2"
+        android:name="com.example.messanger.ui.screens.EditProfileFragment"
+        android:label="EditProfileFragment">
+        <action
+            android:id="@+id/action_editProfileFragment2_to_profileInfoFragment"
+            app:destination="@id/profileInfoFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment2_to_privateInfoFragment"
+            app:destination="@id/privateInfoFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment2_to_remove_account_email"
+            app:destination="@id/remove_account_email" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileInfoFragment"
+        android:name="com.example.messanger.ui.screens.ProfileInfoFragment"
+        android:label="ProfileInfoFragment" />
+    <fragment
+        android:id="@+id/privateInfoFragment"
+        android:name="com.example.messanger.ui.screens.PrivateInfoFragment"
+        android:label="PrivateInfoFragment">
+        <action
+            android:id="@+id/action_privateInfoFragment_to_email_dialog"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <dialog
+        android:id="@+id/remove_account_email"
+        android:name="com.example.messanger.ui.screens.other.EditTextDialogFragment"
+        android:label="remove_acc_email" >
+        <action
+            android:id="@+id/action_remove_account_email_to_remove_account_password"
+            app:destination="@id/remove_account_password" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/remove_account_password"
+        android:label="remove_acc_password"
+        android:name="com.example.messanger.ui.screens.other.PasswordDialog"
+        />
+</navigation>

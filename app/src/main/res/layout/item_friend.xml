@@ -7,7 +7,7 @@
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
     android:layout_marginTop="10dp"
-    android:background="@drawable/angular_user_item"
+    android:background="@drawable/shape_rectangle_white"
     android:padding="5dp"
     android:baselineAligned="false">
 
@@ -64,8 +64,9 @@
             android:textOn=""
             android:textOff=""
             android:pointerIcon="alias"
+
             android:drawableBottom="@drawable/user_item_state_friend"
-            android:background="@android:color/transparent"
+
             />
 
 

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar_with_button_back" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout7"
+        style="@style/ShapeLayout"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@string/email"
+            android:textColor="@color/item_color"
+            android:textSize="20sp" />
+
+
+        <EditText
+            android:id="@+id/email"
+            style="@style/EditTextStyle"
+            android:layout_marginTop="10dp"
+            android:inputType="textEmailAddress"
+            android:text="loliva1234532@gmail.com"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/email_password"
+            style="@style/EditTextStyle"
+            android:layout_marginTop="10dp"
+            android:inputType="textPassword"
+            android:text="loliva1234532@gmail.com"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/submit_email_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shaper_rectangle_main_color"
+            android:text="@string/submit" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ShapeLayout"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@string/password"
+            android:textColor="@color/item_color"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/old_password"
+            style="@style/EditTextStyle"
+            android:layout_marginTop="10dp"
+            android:hint="@string/old_password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/new_password"
+            style="@style/EditTextStyle"
+            android:layout_marginTop="10dp"
+            android:hint="@string/new_password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/repeat_new_password"
+            style="@style/EditTextStyle"
+            android:layout_marginTop="10dp"
+            android:hint="@string/repeat_new_password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/change_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shaper_rectangle_main_color"
+            android:text="@string/change_password" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

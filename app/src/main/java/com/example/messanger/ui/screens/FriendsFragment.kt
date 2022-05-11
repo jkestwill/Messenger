@@ -42,6 +42,7 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initRecyclerView()
+
         viewModel.friendsLiveData.observe(viewLifecycleOwner){
             when(it){
                 is Success->{

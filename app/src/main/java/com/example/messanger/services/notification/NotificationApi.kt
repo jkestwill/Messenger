@@ -1,5 +1,6 @@
 package com.example.messanger.services.notification
 
+import com.example.messanger.BuildConfig
 import com.example.messanger.models.NotificationRequest
 import io.reactivex.rxjava3.core.Completable
 import retrofit2.http.Body
@@ -12,7 +13,7 @@ interface NotificationApi {
     }
 
     @Headers(
-        "Authorization:key=AAAAFqo1AlQ:APA91bFyyTOF7dikqYE4jZRssVNNeNEj8yAmrge42PJVIGawx1I0eGNkyWPSCacwIHqyBxmV5Z05FBjGDCHeb8mADwY68tqdlPCFrC0r74ac9yuvPNCvWvaxhWd0ABQfDzB4TedjUC9O",
+        "Authorization:key=${BuildConfig.PUSH_API_KEY}",
         "Content-Type:application/json"
     )
     @POST("fcm/send")

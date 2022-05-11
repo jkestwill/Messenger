@@ -3,9 +3,10 @@ package com.example.messanger.di.component
 import android.app.Application
 import com.example.messanger.di.module.*
 import com.example.messanger.ui.screens.*
+import com.example.messanger.ui.screens.profile.PhotosFragment
+import com.example.messanger.ui.screens.profile.ProfileFragment
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
 
 @Singleton
@@ -13,9 +14,9 @@ import javax.inject.Singleton
     modules = [
         ViewModelFactoryModule::class,
         AuthViewModelModule::class,
-        MainViewModelModule::class,
+        ViewModelModule::class,
         FirebaseModule::class,
-
+        RepositoryModule::class
     ]
 )
 interface AppComponent {
@@ -27,6 +28,7 @@ interface AppComponent {
         fun build(): AppComponent
     }
 
+    fun inject(activity: MainActivity)
 
     fun inject(fragment: ProfileFragment)
     fun inject(fragment:RegisterFragment)
@@ -37,6 +39,9 @@ interface AppComponent {
     fun inject(fragment:MessageFragment)
     fun inject(fragment:FriendsFragment)
     fun inject(fragment: EditProfileFragment)
-
+    fun inject(fragment:ProfileInfoFragment)
+    fun inject(fragment:PrivateInfoFragment)
+    fun inject(fragment:ForgotPasswordFragment)
+    fun inject(fragment:PhotosFragment)
 
 }

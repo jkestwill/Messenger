@@ -7,23 +7,38 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.messanger.ui.screens.ProfileFragment"
-        android:label="ProfileFragment" >
+        android:name="com.example.messanger.ui.screens.profile.ProfileFragment"
+        android:label="ProfileFragment">
 
         <action
             android:id="@+id/action_profileFragment_to_auth"
             app:destination="@id/auth"
             app:popUpTo="@id/profileFragment"
-            app:popUpToInclusive="true"
-            />
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
-            app:destination="@id/editProfileFragment" />
+            app:destination="@id/settings"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_status_dialog"
+            app:destination="@id/status_dialog" />
+        <action
+            android:id="@+id/action_profileFragment_to_photosFragment"
+            app:destination="@id/photosFragment" />
     </fragment>
+
+    <dialog
+        android:id="@+id/status_dialog"
+        android:label="EditProfileDialog"
+        android:name="com.example.messanger.ui.screens.other.EditTextDialogFragment"
+        tools:layout="@layout/email_dialog" />
+
+
+    <include app:graph="@navigation/settings" />
     <fragment
-        android:id="@+id/editProfileFragment"
-        android:name="com.example.messanger.ui.screens.EditProfileFragment"
-        android:label="fragment_edit_profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        android:id="@+id/photosFragment"
+        android:name="com.example.messanger.ui.screens.profile.PhotosFragment"
+        android:label="PhotosFragment" />
 
 </navigation>

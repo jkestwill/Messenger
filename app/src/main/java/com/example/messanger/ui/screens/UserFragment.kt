@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.messanger.App
 import com.example.messanger.R
+import com.example.messanger.databinding.FragmentUsersBinding
 import com.example.messanger.models.*
 import com.example.messanger.ui.adapters.recycler.UsersListAdapter
 import com.example.messanger.ui.adapters.recycler.difutills.UserDiffUtil
@@ -26,29 +27,26 @@ import javax.inject.Inject
 import dagger.Lazy
 
 
-class UserFragment : Fragment(R.layout.fragment_users) {
+class UserFragment : BaseFragment<FragmentUsersBinding>(FragmentUsersBinding::inflate) {
     @Inject
     lateinit var factory: Lazy<ViewModelProviderFactory>
-
-    private val adapter: UsersListAdapter = UsersListAdapter()
-    private lateinit var recyclerView: RecyclerView
 
     private val viewModel: UsersViewModel by navGraphViewModels(R.id.nav_graph) {
         factory.get()
     }
-    private lateinit var errorTv: TextView
+    private val adapter: UsersListAdapter = UsersListAdapter()
 
     private val TAG = "UserFragment"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAllUsers()
-        initViews()
+
         iniRecyclerView()
         viewModel.usersLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is Success -> {
-                    errorTv.isVisible = false
+                    binding?.usersError?.isVisible = false
                     val diffres =
                         DiffUtil.calculateDiff(UserDiffUtil(adapter.getItems(), it.result))
                     adapter.setItems(it.result)
@@ -57,8 +55,8 @@ class UserFragment : Fragment(R.layout.fragment_users) {
 
                 }
                 is Error -> {
-                    errorTv.isVisible = true
-                    errorTv.text = it.message
+                    binding?.usersError?.isVisible = true
+                    binding?.usersError?.text = it.message
                 }
             }
         }
@@ -75,13 +73,9 @@ class UserFragment : Fragment(R.layout.fragment_users) {
         adapter.detachEventListener()
     }
 
-    private fun initViews() {
-        recyclerView = requireView().findViewById(R.id.users_recycler_view)
-        errorTv = requireView().findViewById(R.id.users_error)
-    }
-
     private fun iniRecyclerView() {
         adapter.setOnEventListener(object : UsersListAdapter.FriendsEventListener {
+
             override fun onMessage(pos: Int, imageButton: ImageButton) {
                 val bundle = Bundle()
                 bundle.putSerializable("user", adapter.getItemAt(pos).uid)
@@ -104,21 +98,21 @@ class UserFragment : Fragment(R.layout.fragment_users) {
                         )
                     )
                 )
+                Log.e(TAG, "onAdd: ")
                 Toast.makeText(requireContext(),resources.getString(R.string.friend_req_sent),Toast.LENGTH_SHORT).show()
 
             }
 
             override fun onRemove(pos: Int, view: ToggleButton) {
                 val user = adapter.getItemAt(pos)
-
                 viewModel.removeFriend(user.uid)
                 viewModel.removeFriendRequest(user.uid)
-
+                Toast.makeText(requireContext(),"Friend request has been removed",Toast.LENGTH_SHORT).show()
             }
 
         })
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager =
+       binding?.usersRecyclerView?.adapter = adapter
+        binding?.usersRecyclerView?.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 

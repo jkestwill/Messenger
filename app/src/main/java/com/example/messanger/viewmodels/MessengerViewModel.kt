@@ -10,6 +10,9 @@ import com.example.messanger.other.DateFormat
 import com.example.messanger.other.RandomString
 import com.example.messanger.repository.MessengerRepository
 import com.example.messanger.repository.NotificationRepository
+import com.example.messanger.repository.UsersRepository
+import com.example.messanger.usecase.CurrentUserUseCase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
@@ -25,7 +28,9 @@ class MessengerViewModel
 @Inject
 constructor(
     private val messengerRepository: MessengerRepository,
-    private val notificationRepository: NotificationRepository
+    private val notificationRepository: NotificationRepository,
+    private val usersRepository: UsersRepository,
+    private val firebaseAuth: FirebaseAuth,
 ) : ViewModel() {
     private val TAG = "MessengerViewModel"
 
@@ -49,33 +54,40 @@ constructor(
         )
     }
 
-    fun sendMessage(user: User, messageText: String) {
-        val message = Message(
-            RandomString.generate(10),
-            user.uid,
-            CurrentUser.user.uid,
-            messageText,
-            false,
-            ServerValue.TIMESTAMP
-        )
 
-        user.messages[CurrentUser.user.uid]?.let {
+    fun sendMessage(userId: String, messageText: String) {
+        firebaseAuth.currentUser?.uid?.let { currentUserId ->
+            val message = Message(
+                RandomString.generate(10),
+                userId,
+                currentUserId,
+                messageText,
+                false,
+                ServerValue.TIMESTAMP
+            )
             disposable.add(
-                messengerRepository.sendMessage(message, it)
-
+                usersRepository.getUserById(currentUserId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
+                        it.messages[userId]?.let { chatReference ->
+                            messengerRepository.sendMessage(message, chatReference)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe({
 
+                                }, {
+                                })
+                        }
                     }, {
-
+                        Log.e(TAG, "sendMessage: ${it.message}")
                     })
             )
-            Log.e("message", it)
         }
     }
 
-
+// лучше не трогать
+    // в двух словах сортирует массив так чтобы между сообщениями были даты
     fun getMessages(user: User) {
         user.messages[CurrentUser.user.uid]?.let {
             disposable.add(
@@ -102,7 +114,7 @@ constructor(
                                         i++
                                         continue
                                     }
-//
+
                                     if (header[i - 1] is Item)
                                         if (
                                             DateFormat.day(item.data.timestamp as Long) !=
@@ -124,18 +136,18 @@ constructor(
 
                     .subscribe(
                         { message ->
-                            if(message.isNotEmpty()) {
+                            if (message.isNotEmpty()) {
                                 message.forEach { item ->
                                     when (item) {
                                         is Item -> {
-                                            if(item.data.to==CurrentUser.user.uid) {
+                                            if (item.data.to == CurrentUser.user.uid) {
                                                 messengerRepository.updateMessage(it, item.data)
                                                     .subscribeOn(Schedulers.io())
                                                     .observeOn(AndroidSchedulers.mainThread())
                                                     .subscribe({
 
                                                     }, { error ->
-                                                        Log.e(TAG, "getMessages: ${error.message}",)
+                                                        Log.e(TAG, "getMessages: ${error.message}")
                                                     })
                                             }
                                         }
@@ -188,13 +200,13 @@ constructor(
             .flatMap {
                 Observable.fromIterable(it)
                     .zipWith(
-                        messengerRepository.getUserById().flattenAsObservable { it },
-                        { t1, t2 ->
-                            t1.userId = t2.uid
-                            t1.imageUrl = t2.photoUrl
-                            t1.username = t2.username
-                            t1
-                        })
+                        messengerRepository.getUserById().flattenAsObservable { it }
+                    ) { t1, t2 ->
+                        t1.userId = t2.uid
+                        t1.imageUrl = t2.photoUrl
+                        t1.username = t2.username
+                        t1
+                    }
                     .toSortedList { o1, o2 ->
                         if ((o1.timestamp as Long) > (o2.timestamp as Long)) {
                             -1
@@ -206,7 +218,7 @@ constructor(
             }
 
 
-            .subscribe({message->
+            .subscribe({ message ->
                 messagePreviewLiveData.value = message
             }, {
                 Log.e(TAG, "getMessagePreview: ${it.message}")

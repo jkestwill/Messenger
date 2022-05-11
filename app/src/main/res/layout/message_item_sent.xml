@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:background="@drawable/angular_message_sent"
+        android:background="@drawable/angular_user_item"
         android:orientation="horizontal"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"

@@ -1,11 +1,13 @@
 package com.example.messanger.viewmodels
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.messanger.models.*
 import com.example.messanger.repository.NotificationRepository
 import com.example.messanger.repository.UsersRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ServerValue
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -15,16 +17,25 @@ import javax.inject.Inject
 class UsersViewModel
 @Inject
 constructor(
-    private val usersRepository: UsersRepository,
-    private val notificationRepository: NotificationRepository
+    private var usersRepository: UsersRepository,
+    private var notificationRepository: NotificationRepository,
+    private var firebaseAuth: FirebaseAuth
 ) : ViewModel() {
+    private val TAG = "UsersViewModel"
 
-    val usersLiveData = MutableLiveData<State<List<User>>>()
-    val friendsLiveData = MutableLiveData<State<List<User>>>()
+    init {
+        Log.e(TAG, ": ${firebaseAuth.currentUser?.displayName}")
+    }
+
+    private var _usersLiveData = MutableLiveData<State<List<User>>>()
+    val usersLiveData: LiveData<State<List<User>>> get() = _usersLiveData
+
+
+    private var _friendsLiveData = MutableLiveData<State<List<User>>>()
+    val friendsLiveData:LiveData<State<List<User>>> get() = _friendsLiveData
 
 
     private val disposable = CompositeDisposable()
-    private val TAG = "FriendsViewModel"
 
 
     fun getAllUsers() {
@@ -38,95 +49,107 @@ constructor(
                     }
                 }
                 .subscribe({
-                    usersLiveData.value = Success(it)
+                    _usersLiveData.postValue(Success(it))
                     Log.e(TAG, "getAllUsers: ")
                 }, {
-                    usersLiveData.postValue(Error("Error"))
+                    _usersLiveData.postValue(Error("Error"))
                     Log.e(TAG, "${it.message.toString()} sukla")
                 })
         )
     }
 
     fun getFriends() {
-        disposable.add(usersRepository.users()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .map {
-                it.filter { user -> user.friends.containsKey(CurrentUser.user.uid) }
-            }
-            .map {
-                it.filter { user -> user.friends[CurrentUser.user.uid] == true }
-            }
-            .map {
-                it.sortedWith { o1, o2 ->
-                    o1.username.compareTo(o2.username)
+        firebaseAuth.currentUser?.let { currentUser ->
+            disposable.add(usersRepository.users()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .map {
+                    it.filter { user -> user.friends.containsKey(currentUser.uid) }
                 }
-            }
-            .subscribe({
-                friendsLiveData.value = Success(it)
-                Log.e(TAG, "getFriends: ${it.isNotEmpty()}")
-            },
-                {
-                    friendsLiveData.value = Error("Error")
+                .map {
+                    it.filter { user -> user.friends[currentUser.uid]!! }
                 }
+                .map {
+                    it.sortedWith { o1, o2 ->
+                        o1.username.compareTo(o2.username)
+                    }
+                }
+                .subscribe({
+                    _friendsLiveData.postValue(Success(it))
+                    Log.e(TAG, "getFriends:usid ${currentUser.uid}, ${it}")
+                },
+                    {
+                        _friendsLiveData.postValue(Error("Error"))
+                    }
+                )
             )
-        )
+        }
     }
 
 
     fun addFriendRequest(user: User) {
-        disposable.add(
-            usersRepository.addFriendRequest(user)
-                .mergeWith(
+        firebaseAuth.currentUser?.let { currentUser ->
+            disposable.add(
+                usersRepository.addFriendRequest(user, currentUser.uid).mergeWith(
                     notificationRepository.sendFriendRequest(
                         FriendRequest(
-                            CurrentUser.user.uid,
-                            "${CurrentUser.user.username} wants to add you as a friend",
+                            currentUser.uid,
+                            "${currentUser.displayName} wants to add you as a friend",
                             ServerValue.TIMESTAMP
                         ),
                         user.uid
                     )
                 )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
 
-                }, {
-                    Log.e(TAG, "addFriendRequest: ${it.message}")
-                })
-        )
+                    }, {
+                        Log.e(TAG, "addFriendRequest: ${it.message}")
+                    })
+
+            )
+        }
+
     }
 
 
     fun removeFriend(userId: String) {
-        disposable.add(usersRepository.remove(userId, CurrentUser.user.uid)
-            .concatWith(usersRepository.remove(CurrentUser.user.uid, userId))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Log.e(TAG, "removed:friend")
-            }, {
-                Log.e(TAG, "removeFriend: $it")
-            }
+        firebaseAuth.currentUser?.let { currentUser ->
+            disposable.add(
+                usersRepository.remove(
+                    userId, currentUser.uid
+                )
+                    .concatWith(usersRepository.remove(CurrentUser.user.uid, userId))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        Log.e(TAG, "removed:friend")
+                    }, {
+                        Log.e(TAG, "removeFriend: $it")
+                    }
+                    )
             )
-        )
+        }
     }
 
 
     fun removeFriendRequest(userId: String) {
-        disposable.add(usersRepository.removeFriendRequest(userId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe( {
-                Log.e(TAG, "removed:friendRequest")
-            },{
-                Log.e(TAG, "removeFriendRequest: $it")
-            }
+        firebaseAuth.currentUser?.let {currentUser->
+            disposable.add(usersRepository.removeFriendRequest(userId,currentUser.uid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.e(TAG, "removed:friendRequest")
+                }, {
+                    Log.e(TAG, "removeFriendRequest: $it")
+                }
+                )
             )
-        )
+        }
     }
 
-    fun sendFriendRequestNotification(notification:NotificationRequest){
+    fun sendFriendRequestNotification(notification: NotificationRequest) {
         notificationRepository.sendNotification(notification)
     }
 

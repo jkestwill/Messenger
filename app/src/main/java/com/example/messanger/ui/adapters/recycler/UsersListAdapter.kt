@@ -57,11 +57,11 @@ class UsersListAdapter() : BaseAdapter<User>() {
                     .into(image)
             }
 
-            if (model.friends.containsKey(CurrentUser.user.uid)
-            ) {
-                add.isChecked = true
-
-            }
+//            if (model.friends.containsKey(CurrentUser.user.uid)
+//            ) {
+//                add.isChecked = true
+//
+//            }
             add.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     eventListener?.onAdd(adapterPosition, add)

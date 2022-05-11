@@ -1,10 +1,10 @@
 package com.example.messanger.repository
 
 import com.example.messanger.models.CurrentUser
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.*
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
+import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
@@ -19,29 +19,39 @@ class AuthRepository @Inject constructor(
 ) {
 
 
-
     fun login(email: String, password: String): Single<FirebaseUser> {
         return Single.create { subscriber ->
             firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    if(task.isSuccessful){
+                    if (task.isSuccessful) {
                         task.result?.user?.let {
                             subscriber.onSuccess(it)
                         }
-
                     }
-
                 }
                 .addOnFailureListener {
                     subscriber.tryOnError(it)
 
                 }
-
         }
-
-
     }
 
+
+    fun forgotPassword(email: String): Completable {
+        return Completable.create { emmiter ->
+            firebaseAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener {
+                    emmiter.onComplete()
+                }
+                .addOnFailureListener {
+                    emmiter.tryOnError(it)
+                }
+
+
+        }
+    }
+
+    // пофиксить юзера
     fun register(username: String, email: String, password: String): Single<FirebaseUser> {
         return Single.create { subscriber ->
             firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -56,18 +66,29 @@ class AuthRepository @Inject constructor(
                             CurrentUser.user.uid = firebaseAuth.currentUser!!.uid
                         }
                     }
-                    it.result?.let {result->
+                    it.result?.let { result ->
+                        updateUsername(username)
                         subscriber.onSuccess(result.user)
                     }
-
                 }
                 .addOnFailureListener {
                     subscriber.onError(it)
                 }
+
+
         }
     }
 
+    private fun updateUsername(username: String) {
+        firebaseAuth.currentUser?.updateProfile(
+            UserProfileChangeRequest.Builder()
+                .setDisplayName(username)
+                .build()
+        )
+    }
 
+    // девайс токен нужен для того чтобы оперделить с какого устройства был выполнен вход
+    // также нужен для отправки push-уведомлений
     fun updateDeviceToken(user: FirebaseUser): Completable {
         return Completable.create { emitter ->
             user.uid.let { user ->
@@ -87,6 +108,44 @@ class AuthRepository @Inject constructor(
                             emitter.onError(it)
                         }
                 }
+            }
+        }
+    }
+
+    fun removeAccount(email: String, password: String): Completable {
+      return  Completable.create { emitter ->
+            firebaseAuth.currentUser?.reauthenticate(
+                EmailAuthProvider.getCredential(
+                    email,
+                    password
+                )
+            )?.addOnCompleteListener {
+                firebaseAuth.currentUser?.delete()
+                    ?.addOnCompleteListener {
+                        emitter.onComplete()
+                    }
+                    ?.addOnFailureListener {
+                        emitter.tryOnError(it)
+                    }
+            }?.addOnFailureListener {
+                emitter.tryOnError(it)
+            }
+        }
+    }
+
+
+    fun removeUser(): Completable {
+       return Completable.create { emitter ->
+            firebaseAuth.currentUser?.uid?.let { uid ->
+                firebaseDatabase.getReference("/users")
+                    .child(uid)
+                    .removeValue()
+                    .addOnCompleteListener {
+                        emitter.onComplete()
+                    }
+                    .addOnFailureListener {
+                        emitter.tryOnError(it)
+                    }
             }
         }
     }

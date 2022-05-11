@@ -55,7 +55,7 @@ class MessageListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     inner class DateViewHolder(view: View) : BaseViewHolder< Date<Message>>(view) {
-        val dateView:TextView=view.findViewById(R.id.symbol)
+        private val dateView:TextView=view.findViewById(R.id.symbol)
         override fun bind(model: Date<Message>) {
             dateView.text=model.date
         }

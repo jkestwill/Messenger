@@ -2,8 +2,8 @@ package com.example.messanger.di.module
 
 import androidx.lifecycle.ViewModel
 import com.example.messanger.di.ViewModelKey
-import com.example.messanger.viewmodels.LoginViewModel
-import com.example.messanger.viewmodels.RegisterViewModel
+import com.example.messanger.viewmodels.auth.LoginViewModel
+import com.example.messanger.viewmodels.auth.RegisterViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

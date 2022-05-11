@@ -15,7 +15,7 @@ constructor(
 ) : ViewModelProvider.Factory {
 
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
         val creator: Provider<in ViewModel> = creators[modelClass] ?: creators.entries.firstOrNull {
 
@@ -25,5 +25,7 @@ constructor(
 
         return creator.get() as T
     }
+
+   
 
 }

@@ -7,13 +7,14 @@ abstract class BaseAdapter<T>:RecyclerView.Adapter<BaseViewHolder< T>>() {
       val itemList=ArrayList<T>()
 
 
-    fun setItems(items:List<T>){
+   open fun setItems(items:List<T>){
         itemList.clear()
         itemList.addAll(items)
+       notifyDataSetChanged()
     }
 
 
-    fun addItem(item: T) {
+    open fun addItem(item: T) {
         itemList.add(item)
         notifyItemChanged(itemList.size-1)
     }

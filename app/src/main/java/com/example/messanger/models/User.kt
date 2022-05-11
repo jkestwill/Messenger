@@ -1,6 +1,7 @@
 package com.example.messanger.models
 
 
+import com.example.messanger.other.DateFormat
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName
 import java.io.Serializable
@@ -32,5 +33,21 @@ data class User(
 
     @set: PropertyName("device_token")
     @get: PropertyName("device_token")
-    var deviceToken:String=""
-) : Serializable
+    var deviceToken: String = "",
+
+    @set: PropertyName("about_me")
+    var aboutMe: String = "",
+    @set: PropertyName("birthday")
+    var birthday:Long = 0L,
+    var gender: String="",
+    var status:String=""
+) : Serializable{
+
+    fun toUserUI(): UserUi {
+        val birthday= if(this.birthday==0L) "" else DateFormat.formatDay(this.birthday)
+        val gender=if(gender.isBlank()) Gender.NONE else Gender.valueOf(this.gender)
+       return UserUi(username,email, birthday,gender,status)
+    }
+}
+
+

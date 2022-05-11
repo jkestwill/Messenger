@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sila"
@@ -8,96 +8,170 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.screens.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:animateLayoutChanges="true"
-        android:fitsSystemWindows="true"
-        app:layout_scrollFlags="scroll|enterAlways">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <ImageView
+            android:id="@+id/button_logout"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic__logout" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <com.elyeproj.loaderviewlibrary.LoaderImageView
+        android:id="@+id/imageView"
+        style="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        app:corners="25"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/shape_rectangle_white"
+        android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+        <com.elyeproj.loaderviewlibrary.LoaderTextView
+            android:id="@+id/profile_username"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:custom_color="#AFAFAF"
+            app:use_gradient="true" />
 
-            <Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:animateLayoutChanges="true"
-                android:layout_gravity="center|top"
-                app:layout_behavior=".ui.adapters.coordinator.ToolbarBehavior">
+        <com.elyeproj.loaderviewlibrary.LoaderTextView
+            android:id="@+id/profile_email"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:padding="4dp"
+            android:textColor="#404040"
+            android:textSize="15sp"
+            app:custom_color="#AFAFAF"
+            app:use_gradient="true" />
 
-                <ImageButton
-                    android:id="@+id/button_logout"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.elyeproj.loaderviewlibrary.LoaderTextView
+                android:id="@+id/profile_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:autoSizeMinTextSize="16sp"
+                android:gravity="center"
+                android:maxHeight="80dp"
+                android:padding="4dp"
+                android:text="Я человек яйца и уменя нет второй почки."
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:custom_color="#AFAFAF"
+                app:use_gradient="true" />
+
+            <ImageButton
+                android:id="@+id/change_status"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/shaper_rectangle_main_color"
+                android:src="@drawable/ic_edit" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/friends_count_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/friends_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end|top"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:color/transparent"
-                    android:padding="5dp"
-                    android:src="@drawable/ic__logout" />
+                    android:layout_gravity="center"
+                    android:text="25"
+                    android:textColor="@color/item_color"
+                    android:textSize="20sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Friends" />
+            </LinearLayout>
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:clickable="true"
-                        android:src="#2C2C2C"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+            <LinearLayout
+                android:id="@+id/photos_count_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-                    <TextView
-                        android:id="@+id/profile_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:gravity="center"
-                        android:text="penis"
-                        android:textColor="@color/white"
-                        android:textSize="25sp" />
+                <TextView
+                    android:id="@+id/photo_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="25"
+                    android:textColor="@color/item_color"
+                    android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/profile_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="4dp"
-                        android:text="email@email.com"
-                        android:textColor="#FFF59D"
-                        android:textSize="20sp" />
-                    <Button
-                        android:id="@+id/profile_edit_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center"
-                        android:layout_marginBottom="10dp"
-                        android:background="#ECAD86"
-                        android:text="@string/edit_profile" />
-                </LinearLayout>
-            </Toolbar>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/photos" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/profile_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/angular_user_item"
+        android:text="@string/edit_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-    </androidx.core.widget.NestedScrollView>
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

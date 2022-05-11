@@ -3,7 +3,9 @@ package com.example.messanger.repository
 
 import android.util.Log
 import com.example.messanger.models.*
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -11,12 +13,12 @@ import java.lang.NullPointerException
 
 
 import javax.inject.Inject
+import kotlin.Exception
 
 
 class UsersRepository @Inject constructor(
-    private var firebaseDataBase: FirebaseDatabase,
-
-    ) {
+    private var firebaseDataBase: FirebaseDatabase
+) {
     private val TAG = "UserRepository"
 
     fun users(): Observable<List<User>> {
@@ -30,7 +32,7 @@ class UsersRepository @Inject constructor(
                         snapshot.getValue(genericTypeIndicator)?.let {
                             emitter.onNext(it.values.toList())
                             Log.e(TAG, "onDataChange: $it")
-                        }?:Log.e(TAG, "onDataChange: yayitsa")
+                        } ?: Log.e(TAG, "onDataChange: yayitsa")
                     }
 
                     override fun onCancelled(error: DatabaseError) {
@@ -43,12 +45,12 @@ class UsersRepository @Inject constructor(
         }
     }
 
-    fun addFriendRequest(user: User): Completable {
+    fun addFriendRequest(user: User, currentUserUid: String): Completable {
         return Completable.create { emitter ->
             firebaseDataBase.getReference("/users")
                 .child("/${user.uid}")
                 .child("/friends")
-                .child("/${CurrentUser.user.uid}")
+                .child("/${currentUserUid}")
                 .setValue(false)
                 .addOnCompleteListener {
                     emitter.onComplete()
@@ -56,6 +58,26 @@ class UsersRepository @Inject constructor(
                 .addOnFailureListener {
                     emitter.onError(it)
                 }
+        }
+    }
+
+    fun getUserById(userId: String): Single<User> {
+       return Single.create<User>{emmitter->
+            firebaseDataBase.getReference("/users")
+                .child("/$userId")
+                .addListenerForSingleValueEvent(object:ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val value =snapshot.getValue<User?>()
+                        value?.let {
+                            emmitter.onSuccess(it)
+                        }?:emmitter.onError(Exception("User not found"))
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        emmitter.onError(Exception("User not found"))
+                    }
+
+                })
         }
     }
 
@@ -77,12 +99,13 @@ class UsersRepository @Inject constructor(
         }
     }
 
-    fun removeFriendRequest(userId: String): Completable {
+    fun removeFriendRequest(userId: String, currentUserUid: String): Completable {
         return Completable.create { emitter ->
             firebaseDataBase
                 .getReference("/users")
                 .child("/${userId}")
                 .child("/friend_request")
+                .child(currentUserUid)
                 .removeValue()
                 .addOnCompleteListener {
                     emitter.onComplete()
@@ -90,6 +113,7 @@ class UsersRepository @Inject constructor(
                 .addOnFailureListener {
                     emitter.onError(it)
                 }
+
         }
     }
 

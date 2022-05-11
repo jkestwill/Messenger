@@ -6,12 +6,14 @@
         <entry key="..\:/Messanger/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.15729166666666666" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/angular_message_sent.xml" value="0.16458333333333333" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/angular_user_item.xml" value="0.1824074074074074" />
+        <entry key="..\:/Messanger/app/src/main/res/drawable/button_back.xml" value="0.194" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/ic__logout.xml" value="0.20833333333333334" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/ic_accept.xml" value="0.1578125" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/ic_add.xml" value="0.24444444444444444" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/ic_baseline_person_add_24.xml" value="0.2890625" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/ic_baseline_person_remove_24.xml" value="0.2890625" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/ic_delete.xml" value="0.1765625" />
+        <entry key="..\:/Messanger/app/src/main/res/drawable/ic_edit.xml" value="0.1795" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/ic_friend_state.xml" value="0.2890625" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/ic_launcher_background.xml" value="0.15729166666666666" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/ic_logout.xml" value="0.2490740740740741" />
@@ -20,22 +22,31 @@
         <entry key="..\:/Messanger/app/src/main/res/drawable/ic_remove_friend.xml" value="0.2890625" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/message_notification_alert.xml" value="0.2890625" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/shapable_message.xml" value="0.2074074074074074" />
+        <entry key="..\:/Messanger/app/src/main/res/drawable/shape_rectangle_darker.xml" value="0.1795" />
+        <entry key="..\:/Messanger/app/src/main/res/drawable/shape_rectangle_white.xml" value="0.1795" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/shapeble_message_sent.xml" value="0.16614583333333333" />
+        <entry key="..\:/Messanger/app/src/main/res/drawable/shaper_rectangle_main_color.xml" value="0.1795" />
         <entry key="..\:/Messanger/app/src/main/res/drawable/user_item_state_friend.xml" value="0.16458333333333333" />
         <entry key="..\:/Messanger/app/src/main/res/layout/activity_login.xml" value="0.18" />
         <entry key="..\:/Messanger/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/email_dialog.xml" value="0.33" />
         <entry key="..\:/Messanger/app/src/main/res/layout/fragment_blank.xml" value="0.13272543059777103" />
         <entry key="..\:/Messanger/app/src/main/res/layout/fragment_edit_profile.xml" value="0.25" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/fragment_forgot_password.xml" value="0.25" />
         <entry key="..\:/Messanger/app/src/main/res/layout/fragment_friends.xml" value="0.16458333333333333" />
         <entry key="..\:/Messanger/app/src/main/res/layout/fragment_login.xml" value="0.25" />
-        <entry key="..\:/Messanger/app/src/main/res/layout/fragment_message.xml" value="0.28792007266121705" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/fragment_message.xml" value="0.1832797427652733" />
         <entry key="..\:/Messanger/app/src/main/res/layout/fragment_messanger.xml" value="0.25" />
         <entry key="..\:/Messanger/app/src/main/res/layout/fragment_messenger.xml" value="0.14" />
         <entry key="..\:/Messanger/app/src/main/res/layout/fragment_notification.xml" value="0.16458333333333333" />
-        <entry key="..\:/Messanger/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
-        <entry key="..\:/Messanger/app/src/main/res/layout/fragment_register.xml" value="0.13272543059777103" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/fragment_photos.xml" value="0.1671195652173913" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/fragment_private_layout.xml" value="0.33" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/fragment_profile_info.xml" value="0.25" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/fragment_register.xml" value="0.25" />
         <entry key="..\:/Messanger/app/src/main/res/layout/fragment_users.xml" value="0.2" />
         <entry key="..\:/Messanger/app/src/main/res/layout/fragment_users_view_pager.xml" value="0.13272543059777103" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/image_slide_layout.xml" value="0.1671195652173913" />
         <entry key="..\:/Messanger/app/src/main/res/layout/item_friend.xml" value="0.34850299401197604" />
         <entry key="..\:/Messanger/app/src/main/res/layout/item_user_header.xml" value="0.33" />
         <entry key="..\:/Messanger/app/src/main/res/layout/message_item.xml" value="0.33" />
@@ -44,7 +55,9 @@
         <entry key="..\:/Messanger/app/src/main/res/layout/message_preview_item.xml" value="0.5103626943005182" />
         <entry key="..\:/Messanger/app/src/main/res/layout/message_prview_item.xml" value="0.15081521739130435" />
         <entry key="..\:/Messanger/app/src/main/res/layout/notification_item.xml" value="0.25" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/password_dialog.xml" value="0.13229166666666667" />
         <entry key="..\:/Messanger/app/src/main/res/layout/profile_friends.xml" value="0.21603260869565216" />
+        <entry key="..\:/Messanger/app/src/main/res/layout/toolbar_with_button_back.xml" value="0.1671195652173913" />
         <entry key="..\:/Messanger/app/src/main/res/menu/bottom_nav.xml" value="0.12222222222222222" />
         <entry key="..\:/Messanger/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.15729166666666666" />
         <entry key="..\:/Messanger/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.15729166666666666" />
